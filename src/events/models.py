@@ -14,13 +14,15 @@ class Event(models.Model):
         (TimeStatus.CANCELED, "Canceled"),
     ]
 
-    title = models.TextField()
+    title = models.CharField(max_length=255)
     description = models.TextField()
-    venue = models.TextField()
+    venue = models.CharField(max_length=255)
     time_status = models.CharField(
         max_length=255,
         choices=TIME_STATUS_CHOICE
     )
-    date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    event_start_at = models.DateTimeField()
+    event_ended_at = models.DateTimeField()
+    register_start_at = models.DateTimeField()
+    result_release_at = models.DateTimeField()
+    register_ended_at = models.DateTimeField()

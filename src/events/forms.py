@@ -9,7 +9,9 @@ class EventForm(forms.ModelForm):
             'title',
             'description',
             'time_status',
-            'date',
-            'start_time',
-            'end_time',
+            'event_start_at',
+            'event_ended_at',
+            'register_start_at',
+            'result_release_at',
+            'register_ended_at',
         ]
