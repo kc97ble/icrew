@@ -8,6 +8,8 @@ class EventForm(forms.ModelForm):
         fields = [
             'title',
             'description',
-            'start_date',
-            'end_date'
+            'time_status',
+            'date',
+            'start_time',
+            'end_time',
         ]
