@@ -1,1 +1,10 @@
+<pre>
 {{ debug }}
+</pre>
+<p>{{ event.event_start_at }}</p>
+<p>{{ event.event_ended_at }}</p>
+<form method=post>
+  {% csrf_token %}
+  <button type=submit>Register</button>
+</form>
+<button>Register</button>

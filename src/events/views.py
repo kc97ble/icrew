@@ -1,5 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.views import View
+
+from . import logics
+from .exceptions import LogicError
 from .models import Event
 from .forms import EventForm
 
@@ -12,12 +16,26 @@ def event_list_view(request, *args, **kwargs):
     )
 
 
-def event_detail_view(request, id, *args, **kwargs):
-    return render(
-        request,
-        'events/event_detail_view.html',
-        {'debug': [id, args, kwargs, Event.objects.get(id=id)]}
-    )
+class EventDetailView(View):
+    template_name = 'events/event_detail_view.html'
+
+    def get(self, request, id, *args, **kwargs):
+        event = get_object_or_404(Event, id=id)
+        return render(
+            request,
+            self.template_name, {
+                'event': event,
+                'debug': [id, args, kwargs, event, ]
+            }
+        )
+
+    def post(self, request, id, *args, **kwargs):
+        event = get_object_or_404(Event, id=id)
+        try:
+            logics.add_registration(request.user, event)
+        except LogicError as e:
+            return HttpResponseBadRequest(str(e))
+        return HttpResponse("Registration succeeded.")
 
 
 def event_create_view(request):
