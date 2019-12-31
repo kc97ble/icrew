@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from events.views import event_list_view, EventDetailView, event_create_view
+from events.views import event_list_view, EventDetailView
 from home.views import home_view
 from users.views import users_view
 
@@ -26,6 +26,5 @@ urlpatterns = [
     path('events/', event_list_view),
     path('users/', include('users.urls')),
     path('events/<int:id>', EventDetailView.as_view()),
-    path('events/add', event_create_view),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

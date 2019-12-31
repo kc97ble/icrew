@@ -2,39 +2,46 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class TimeStatus(models.TextChoices):
+    ON_TIME = "ON_TIME"
+    DELAYED = "DELAYED"
+    CANCELED = "CANCELED"
+
+
+class RegistrationStatus(models.TextChoices):
+    PENDING = "PENDING"
+    ACCEPTED = "ACCEPTED"
+    REJECTED = "REJECTED"
+
+
+class WeekChoices(models.TextChoices):
+    NONE = "NONE"
+    WEEK_0 = "WEEK_0"
+    WEEK_1 = "WEEK_1"
+    WEEK_2 = "WEEK_2"
+    WEEK_3 = "WEEK_3"
+    WEEK_4 = "WEEK_4"
+    WEEK_5 = "WEEK_5"
+
+
+def CharFieldWithChoice(Choices, default=None):
+    return models.CharField(max_length=255, choices=Choices.choices, default=default)
+
+
 class Event(models.Model):
-
-    class EventTimeStatus(models.TextChoices):
-        ON_TIME = 'ON_TIME', "On time"
-        DELAYED = 'DELAYED', "Delayed"
-        CANCELED = 'CANCELED', "Canceled"
-
+    week = CharFieldWithChoice(WeekChoices, default=WeekChoices.NONE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     venue = models.CharField(max_length=255)
-    time_status = models.CharField(
-        max_length=255,
-        choices=EventTimeStatus.choices,
-        default=EventTimeStatus.ON_TIME,
-    )
-    event_start_at = models.DateTimeField()
-    event_ended_at = models.DateTimeField()
-    register_start_at = models.DateTimeField()
-    result_release_at = models.DateTimeField()
-    register_ended_at = models.DateTimeField()
+    time_status = CharFieldWithChoice(TimeStatus, default=TimeStatus.ON_TIME)
+    readonly = models.BooleanField(null=False, default=False)
+    hidden = models.BooleanField(null=False, default=False)
+    is_fcfs = models.BooleanField(null=False, default=False)
+    start_at = models.DateTimeField()
+    ended_at = models.DateTimeField()
 
 
 class Registration(models.Model):
-
-    class RegistrationStatus(models.TextChoices):
-        PENDING = 'PENDING', "Pending"
-        ACCEPTED = 'ACCEPTED', "Accepted"
-        REJECTED = 'REJECTED', "Rejected"
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    status = models.CharField(
-        max_length=255,
-        choices=RegistrationStatus.choices,
-        default=RegistrationStatus.PENDING,
-    )
+    status = CharFieldWithChoice(RegistrationStatus, default=RegistrationStatus.PENDING)

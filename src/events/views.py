@@ -5,7 +5,6 @@ from django.views import View
 from . import logics
 from .exceptions import LogicError
 from .models import Event
-from .forms import EventForm
 
 
 def event_list_view(request, *args, **kwargs):
@@ -36,16 +35,3 @@ class EventDetailView(View):
         except LogicError as e:
             return HttpResponseBadRequest(str(e))
         return HttpResponse("Registration succeeded.")
-
-
-def event_create_view(request):
-    form = EventForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        form = EventForm()
-
-    return render(
-        request,
-        'events/event_create_view.html',
-        {'form': form}
-    )
