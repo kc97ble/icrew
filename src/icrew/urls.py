@@ -18,11 +18,13 @@ from django.urls import path, include
 
 from events.views import event_list_view, EventDetailView, event_create_view
 from home.views import home_view
+from users.views import users_view
 
 urlpatterns = [
     path('', home_view),
     path('admin/', admin.site.urls),
     path('events/', event_list_view),
+    path('users/', include('users.urls')),
     path('events/<int:id>', EventDetailView.as_view()),
     path('events/add', event_create_view),
     path('accounts/', include('django.contrib.auth.urls')),
