@@ -31,14 +31,15 @@ def CharFieldWithChoice(Choices, default=None):
 class Event(models.Model):
     week = CharFieldWithChoice(WeekChoices, default=WeekChoices.NONE)
     title = models.CharField(max_length=255)
-    description = models.TextField()
-    venue = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    venue = models.CharField(max_length=255, blank=True)
     time_status = CharFieldWithChoice(TimeStatus, default=TimeStatus.ON_TIME)
     readonly = models.BooleanField(null=False, default=False)
     hidden = models.BooleanField(null=False, default=False)
-    is_fcfs = models.BooleanField(null=False, default=False)
+    is_fcfs = models.BooleanField(null=False, default=False, verbose_name="FCFS")
     start_at = models.DateTimeField()
     ended_at = models.DateTimeField()
+    manpower = models.IntegerField(default=1)
 
 
 class Registration(models.Model):
