@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='event',
-            name='manpower',
+            name='demand',
             field=models.IntegerField(default=1),
         ),
         migrations.AlterField(

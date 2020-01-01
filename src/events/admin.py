@@ -5,13 +5,13 @@ from django.contrib import admin
 from .models import Event, Registration
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['title', 'week', 'week_no', 'start_at', 'readonly', 'hidden', 'is_fcfs', 'registration_status']
-    list_editable = ['readonly', 'hidden', 'is_fcfs']
-    list_filter = ['week', 'readonly', 'hidden', 'is_fcfs']
+    list_display = ['title', 'week_no', 'start_at', 'locked', 'hidden', 'is_fcfs', 'status']
+    list_editable = ['locked', 'hidden', 'is_fcfs']
+    list_filter = ['locked', 'hidden', 'is_fcfs']
 
-    def registration_status(self, event):
-        q = Registration.objects.filter(event=event)
-        return "{} registered".format(q.count())
+    # def registration_status(self, event):
+    #     q = Registration.objects.filter(event=event)
+    #     return "{} registered".format(q.count())
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Registration)

@@ -6,7 +6,7 @@ import calendar
 
 from . import logics
 from .exceptions import LogicError
-from .models import Event, WeekChoices
+from .models import Event
 
 
 def event_list_view(request, *args, **kwargs):
