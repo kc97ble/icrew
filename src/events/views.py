@@ -1,18 +1,20 @@
-from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views import View
 
 import calendar
 
-from . import logics
+from . import logics, utils
 from .exceptions import LogicError
 from .models import Event
 
 
-def event_list_view(request, *args, **kwargs):
-    return render(
-        request, "events/event_list_view.html", {"debug": Event.objects.all()}
-    )
+class EventHomeView(View):
+    def get(request, *args, **kwargs):
+        return redirect(
+            reverse("events-week", kwargs={"week_no": utils.current_week_no()})
+        )
 
 
 class EventDetailView(View):
@@ -43,12 +45,12 @@ class EventWeekView(View):
         days = [
             {
                 "day_name": calendar.day_name[day_of_week],
+                "date": utils.datetime_from_week_no(week_no, day_of_week),
                 "events": [e for e in events if e.day_of_week() == day_of_week],
             }
             for day_of_week in range(7)
         ]
         data = {
-            'days': days,
-            "debug": "Hello!",
+            "days": days,
         }
         return render(request, self.template_name, data)
