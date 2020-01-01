@@ -5,7 +5,7 @@ from django.contrib import admin
 from .models import Event, Registration
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['title', 'week', 'start_at', 'readonly', 'hidden', 'is_fcfs', 'registration_status']
+    list_display = ['title', 'week', 'week_no', 'start_at', 'readonly', 'hidden', 'is_fcfs', 'registration_status']
     list_editable = ['readonly', 'hidden', 'is_fcfs']
     list_filter = ['week', 'readonly', 'hidden', 'is_fcfs']
 

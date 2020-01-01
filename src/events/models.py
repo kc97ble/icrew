@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+WEEK_OFFSET = -2
 
 class TimeStatus(models.TextChoices):
     ON_TIME = "ON_TIME"
@@ -40,6 +41,12 @@ class Event(models.Model):
     start_at = models.DateTimeField()
     ended_at = models.DateTimeField()
     manpower = models.IntegerField(default=1)
+
+    def week_no(self):
+        return self.start_at.isocalendar()[1] + WEEK_OFFSET
+
+    def day_of_week(self):
+        return self.start_at.weekday()
 
 
 class Registration(models.Model):

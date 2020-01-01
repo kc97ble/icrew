@@ -16,15 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from events.views import event_list_view, EventDetailView
 from home.views import home_view
-from users.views import users_view
 
 urlpatterns = [
     path('', home_view),
     path('admin/', admin.site.urls),
-    path('events/', event_list_view),
+    path('events/', include('events.urls')),
     path('users/', include('users.urls')),
-    path('events/<int:id>', EventDetailView.as_view()),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
