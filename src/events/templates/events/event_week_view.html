@@ -22,7 +22,7 @@
           <div class="card">
             <div class="card-body">
               <h6 class="card-title">
-                <a href="#" class="stretched-link">{{ event.title }}</a>
+                <a href="{% url 'events-detail' id=event.id %}" class="stretched-link">{{ event.title }}</a>
               </h6>
               <p class="text-secondary m-0">
                 {{ event.start_at|date:"H:i" }} - {{ event.ended_at|date:"H:i" }}
@@ -30,7 +30,17 @@
               <p class="text-secondary m-0">@ {{ event.venue }}</p>
               <!-- <p class="m-0">TODO 1/2 confirmed: John Doe</p> -->
               <p>
-                <span class="badge badge-secondary">{{ event.status.label }}</span>
+                <span class="{{ event.time_status_class|default:'badge badge-secondary' }}">
+                  {{ event.time_status_label|default:'Unknown time status' }}
+                </span>
+                <span class="{{ event.status_class|default:'badge badge-secondary' }}">
+                  {{ event.status_label|default:'Unknown status' }}
+                </span>
+                {% if event.has_registered %}
+                <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}">
+                  {{ event.reg_status_label|default:'Unknown status' }}
+                </span>
+                {% endif %}
               </p>
             </div>
           </div>

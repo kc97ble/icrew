@@ -1,13 +1,24 @@
 <!-- templates/home.html -->
-{% extends 'base.html' %}
-
-{% block title %}Home{% endblock %}
-
-{% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a>
-{% endif %}
-{% endblock %}
+{% extends 'home/base_home.html' %} {% load static %} {% block title %}ICREW{% endblock %} {% block content %}
+<div class="container">
+  <h4>Welcome to ICREW!</h4>
+  <div class="my-4">
+    {% if user.is_authenticated %} Hi {{ user.username }}! {% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+  </div>
+  <div>
+    ICREW (IHG Coverage Reg of EusoffWorks) is a website provides these services:
+    <ul>
+      <li>Provides the schedule of IHG events</li>
+      <li>Allows the members to register to cover IHG events</li>
+      <li>Allows the heads to allocate manpower fairly</li>
+    </ul>
+  </div>
+  <div>
+    <p>New to the system? Read the User Guide below.</p>
+    <a href="{% static 'icrew_user_guide.pdf' %}"> User guide </a>
+  </div>
+</div>
+{% endblock content %}

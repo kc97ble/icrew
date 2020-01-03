@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('venue', models.CharField(blank=True, max_length=255)),
                 ('time_status', models.CharField(choices=[('ON_TIME', 'On Time'), ('DELAYED', 'Delayed'), ('CANCELED', 'Canceled')], default='ON_TIME', max_length=255)),
                 ('locked', models.BooleanField(default=False)),
-                ('locking_reason', models.CharField(choices=[('NONE', 'None'), ('UNOPENED', 'Unopened'), ('EVENT_CANCELED', 'Event Canceled'), ('REGISTRATION_CLOSED', 'Registration Closed')], default='NONE', max_length=255)),
+                ('locking_reason', models.CharField(choices=[('NONE', 'None'), ('UNOPENED', 'Unopened'), ('EVENT_CANCELED', 'Event Canceled'), ('REG_CLOSED', 'Reg Closed')], default='NONE', max_length=255)),
                 ('hidden', models.BooleanField(default=False)),
                 ('is_fcfs', models.BooleanField(default=False, verbose_name='FCFS')),
                 ('start_at', models.DateTimeField()),
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Registration',
+            name='Reg',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('status', models.CharField(choices=[('PENDING', 'Pending'), ('ACCEPTED', 'Accepted'), ('REJECTED', 'Rejected')], default='PENDING', max_length=255)),

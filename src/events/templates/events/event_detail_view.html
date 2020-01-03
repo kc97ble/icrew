@@ -1,10 +1,83 @@
-<pre>
-{{ debug }}
-</pre>
-<p>{{ event.event_start_at }}</p>
-<p>{{ event.event_ended_at }}</p>
-<form method=post>
-  {% csrf_token %}
-  <button type=submit>Register</button>
-</form>
-<button>Register</button>
+{% extends "events/base_events.html" %} {% block content %}
+
+<div class="container-sm">
+  <h1>{{ event.title }}</h1>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Time</td>
+        <td>{{ event.start_at|date:"H:i" }} - {{ event.ended_at|date:"H:i" }}</td>
+      </tr>
+      <tr>
+        <td>Date</td>
+        <td>{{ event.start_at|date:"d M Y" }}</td>
+      </tr>
+      <tr>
+        <td>Venue</td>
+        <td>{{ event.venue|default:"(none)" }}</td>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <td>{{ event.description|default:"(none)" }}</td>
+      </tr>
+      <tr>
+        <td>Demand</td>
+        <td>{{ event.demand }} videographer{{ event.demand|pluralize }}</td>
+      </tr>
+      <tr>
+        <td>Time status</td>
+        <td>
+          <span class="{{ event.time_status_class|default:'badge badge-secondary' }}">
+            {{ event.time_status_label|default:'Unknown time status' }}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Event status
+        </td>
+        <td>
+          <span class="{{ event.status_class|default:'badge badge-secondary' }}">
+            {{ event.status_label|default:'Unknown status' }}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Registration status
+        </td>
+        <td>
+          <span class="{{ reg.reg_status_class|default:'badge badge-secondary' }}">
+            {{ reg.reg_status_label|default:'Unknown status' }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <form method="post">
+    {% csrf_token %} {% if not reg.has_registered%}
+    <button
+      class="btn btn-primary btn-lg btn-block "
+      type="submit"
+      name="action"
+      value="register"
+      {% if not reg.can_register %} disabled {% endif %}
+    >
+      Register
+    </button>
+    {% else %}
+    <button
+      class="btn btn-danger btn-lg btn-block"
+      type="submit"
+      name="action"
+      value="unregister"
+      {% if not reg.can_unregister %} disabled {% endif %}
+    >
+      Unregister
+    </button>
+    {% endif %}
+  </form>
+</div>
+
+{% endblock content %}
