@@ -6,11 +6,15 @@ from .models import Event, Reg, EventStatus, RegStatus
 
 
 def reg_status(user, event):
+    if user.is_anonymous:
+        return RegStatus.NONE
     r = Reg.objects.filter(user=user, event=event).first()
     return r.status if r is not None else RegStatus.NONE
 
 
 def add_reg(user, event):
+    if user.is_anonymous:
+        raise LogicError("You have to login first.")
     if reg_status(user, event) != RegStatus.NONE:
         raise LogicError("You have registered for this event already.")
 

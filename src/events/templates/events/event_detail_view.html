@@ -47,37 +47,31 @@
           Registration status
         </td>
         <td>
-          <span class="{{ reg.reg_status_class|default:'badge badge-secondary' }}">
-            {{ reg.reg_status_label|default:'Unknown status' }}
+          <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}">
+            {{ event.reg_status_label|default:'Unknown status' }}
           </span>
         </td>
       </tr>
     </tbody>
   </table>
 
+  {% if user.is_authenticated %}
   <form method="post">
-    {% csrf_token %} {% if not reg.has_registered%}
-    <button
-      class="btn btn-primary btn-lg btn-block "
-      type="submit"
-      name="action"
-      value="register"
-      {% if not reg.can_register %} disabled {% endif %}
-    >
+    {% csrf_token %} {% if not event.has_registered%}
+    <button class="btn btn-primary btn-lg btn-block " type="submit" name="action" value="register" {% if not event.can_register %} disabled {% endif %}>
       Register
     </button>
     {% else %}
-    <button
-      class="btn btn-danger btn-lg btn-block"
-      type="submit"
-      name="action"
-      value="unregister"
-      {% if not reg.can_unregister %} disabled {% endif %}
-    >
+    <button class="btn btn-danger btn-lg btn-block" type="submit" name="action" value="unregister" {% if not event.can_unregister %} disabled {% endif %}>
       Unregister
     </button>
     {% endif %}
   </form>
+  {% else %}
+  <div class="alert alert-danger">
+    You have to login before registration.
+  </div>
+  {% endif %}
 </div>
 
 {% endblock content %}

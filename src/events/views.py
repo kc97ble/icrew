@@ -37,6 +37,10 @@ REG_STATUS_CLASS = {
 def decorated_event(event, user):
     es = event.status()
     rs = logics.reg_status(user, event)
+    is_event_open = es in [
+        EventStatus.OPEN_REG_AND_WAIT,
+        EventStatus.OPEN_FCFS,
+    ]
     return {
         "time_status_label": TimeStatus[event.time_status].label,
         "time_status_class": TIME_STATUS_CLASS[event.time_status],
@@ -45,6 +49,10 @@ def decorated_event(event, user):
         "reg_status_label": RegStatus[rs].label,
         "reg_status_class": REG_STATUS_CLASS[rs],
         "has_registered": rs != RegStatus.NONE,
+        "can_register": user.is_authenticated
+        and rs == RegStatus.NONE
+        and is_event_open,
+        "can_unregister": user.is_authenticated and rs == RegStatus.PENDING,
         **event.__dict__,
     }
 
