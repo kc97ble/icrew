@@ -68,27 +68,39 @@ class Event(models.Model):
         ).count()
         return num_reg_accepted >= self.demand
 
+    def get_week_config(self):
+        return WeekConfig.objects.filter(week_no=self.week_no()).first()
+
     def status(self):
         if self.locked:
             if self.locking_reason == LockingReason.NONE:
                 return EventStatus.CLOSED_NONE.value
-            elif self.locking_reason == LockingReason.UNOPENED:
+            if self.locking_reason == LockingReason.UNOPENED:
                 return EventStatus.CLOSED_UNOPENED.value
-            elif self.locking_reason == LockingReason.EVENT_CANCELED:
+            if self.locking_reason == LockingReason.EVENT_CANCELED:
                 return EventStatus.CLOSED_EVENT_CANCELLED.value
-            elif self.locking_reason == LockingReason.REG_CLOSED:
+            if self.locking_reason == LockingReason.REG_CLOSED:
+                return EventStatus.CLOSED_REG_CLOSED.value
+            raise Exception("Unknown locking_reason")
+
+        now = timezone.now()
+        wc = self.get_week_config()
+        print(123123, self, wc)
+        if wc and wc.reg_start_at and now < wc.reg_start_at:
+            return EventStatus.CLOSED_UNOPENED.value
+
+
+        if not self.is_fcfs:
+            if wc and wc.reg_ended_at and now > wc.reg_ended_at:
                 return EventStatus.CLOSED_REG_CLOSED.value
             else:
-                raise Exception("Unknown locking_reason")
-        elif not self.is_fcfs:
-            now = timezone.now()
-            return EventStatus.OPEN_REG_AND_WAIT.value
-        elif self.is_demand_fulfilled():
+                return EventStatus.OPEN_REG_AND_WAIT.value
+
+        if self.is_demand_fulfilled():
             return EventStatus.CLOSED_DEMAND_FULFILLED.value
-        elif timezone.now() >= self.start_at:
+        if now >= self.start_at:
             return EventStatus.CLOSED_UNFULFILLED.value
-        else:
-            return EventStatus.OPEN_FCFS.value
+        return EventStatus.OPEN_FCFS.value
 
 
 class Reg(models.Model):
@@ -98,3 +110,12 @@ class Reg(models.Model):
 
     def __str__(self):
         return "{} - {} - {}".format(self.event.title, self.user.username, self.status)
+
+
+class WeekConfig(models.Model):
+    week_no = models.IntegerField(primary_key=True)
+    reg_start_at = models.DateTimeField(null=True, blank=True)
+    reg_ended_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return "{} - {} - {}".format(self.week_no, self.reg_start_at, self.reg_ended_at)
