@@ -4,8 +4,7 @@
   <h4>Welcome to ICREW!</h4>
   <div class="my-4">
     {% if user.is_authenticated %} Hi {{ user.username }}! {% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Login</a>
+    <p>You are not logged in.</p>
     {% endif %}
   </div>
   <div>
@@ -17,8 +16,18 @@
     </ul>
   </div>
   <div>
-    <p>New to the system? Read the User Guide below.</p>
-    <a href="{% static 'icrew_user_guide.pdf' %}"> User guide </a>
+    <p>
+      New to the system? Read
+      <a class="bg-primary text-white" href="{% static 'icrew_user_guide.pdf' %}">User Guide</a>
+      now.
+    </p>
+  </div>
+  <div>
+    <p>
+      First time login?
+      <a class="bg-danger text-white" href="{% url 'change_password' %}">Change password</a>
+      immediatelly.
+    </p>
   </div>
 </div>
 {% endblock content %}

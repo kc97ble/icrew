@@ -121,7 +121,7 @@ class EventWeekView(View):
                 "date": utils.datetime_from_week_no(week_no, dow),
                 "events": [
                     decorated_event(e, request.user)
-                    for e in events
+                    for e in sorted(events, key=lambda e: e.start_at)
                     if e.day_of_week() == dow
                 ],
             }
