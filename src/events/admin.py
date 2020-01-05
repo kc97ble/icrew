@@ -1,22 +1,35 @@
 from django.contrib import admin
 
-# Register your models here.
-
 from .models import Event, Reg, WeekConfig
-
 
 class EventAdmin(admin.ModelAdmin):
     list_display = [
         "title",
         "week_no",
-        "start_at",
+        "date",
+        "start_time",
+        "ended_time",
+        "venue",
+        "demand",
+        "status",
         "locked",
+        "locking_reason",
         "hidden",
         "is_fcfs",
-        "status",
     ]
-    list_editable = ["locked", "hidden", "is_fcfs"]
-    list_filter = ["locked", "hidden", "is_fcfs"]
+    list_editable = ["locked", "hidden", "is_fcfs", "locking_reason"]
+    list_filter = ["demand", "locked", "hidden", "is_fcfs", "locking_reason"]
+
+    def date(self, event):
+        return event.start_at.date()
+
+    def start_time(self, event):
+        return event.start_at.time()
+
+    def ended_time(self, event):
+        return event.ended_at.time()
+
+    date.admin_order_field = "start_at"
 
 
 class RegAdmin(admin.ModelAdmin):

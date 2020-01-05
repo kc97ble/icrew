@@ -104,7 +104,7 @@ TIME_ZONE = 'Asia/Singapore'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -119,3 +119,7 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+DATETIME_FORMAT = "d M Y H:i"
+DATE_FORMAT = "d M Y"
+TIME_FORMAT = "H:i"

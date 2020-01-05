@@ -85,7 +85,6 @@ class Event(models.Model):
 
         now = timezone.now()
         wc = self.get_week_config()
-        print(123123, self, wc)
         if wc and wc.reg_start_at and now < wc.reg_start_at:
             return EventStatus.CLOSED_UNOPENED.value
 

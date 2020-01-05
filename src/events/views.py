@@ -114,7 +114,6 @@ class EventDetailView(View):
     def post(self, request, id, *args, **kwargs):
         action = request.POST["action"]
         event = get_object_or_404(Event, id=id)
-        print(action, event, request.user)
         try:
             if "register" == action:
                 logics.add_reg(request.user, event)
