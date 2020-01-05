@@ -19,7 +19,12 @@
           <h6 class="text-center">{{ day.date|date:"d M Y" }}</h6>
 
           {% for event in day.events %}
-          <div class="card">
+          <div class="card my-4 {% if event.is_user_accepted %} border-success {% endif %}">
+            {% if event.is_user_accepted %}
+            <div class="card-header bg-success text-white font-weight-bold">
+              <i class="fa fa-check"></i> Allocated
+            </div>
+            {% endif %}
             <div class="card-body">
               <h6 class="card-title">
                 <a href="{% url 'events-detail' id=event.id %}" class="stretched-link">{{ event.title }}</a>
@@ -28,7 +33,16 @@
                 {{ event.start_at|date:"H:i" }} - {{ event.ended_at|date:"H:i" }}
               </p>
               <p class="text-secondary m-0">@ {{ event.venue }}</p>
-              <!-- <p class="m-0">TODO 1/2 confirmed: John Doe</p> -->
+              <p class="text-secondary m-0">{{ event.reg_count }} / {{ event.demand }} registered</p>
+              {% if event.accepted_users %}
+              <p class="text-success m-0">
+                Allocated users ({{ event.accepted_users|length }}):
+                {% for user in event.accepted_users %}
+                {{ user.displayed_name  }}
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </p>
+              {% endif %}
               <p>
                 <span class="{{ event.time_status_class|default:'badge badge-secondary' }}">
                   {{ event.time_status_label|default:'Unknown time status' }}

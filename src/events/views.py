@@ -7,7 +7,7 @@ import calendar
 
 from . import logics, utils
 from .exceptions import LogicError
-from .models import Event, TimeStatus, EventStatus, RegStatus
+from .models import Event, TimeStatus, EventStatus, RegStatus, Reg
 
 TIME_STATUS_CLASS = {
     TimeStatus.ON_TIME.value: "badge badge-light",
@@ -23,7 +23,7 @@ STATUS_CLASS = {
     EventStatus.OPEN_REG_AND_WAIT.value: "badge badge-info",
     EventStatus.OPEN_FCFS.value: "badge badge-warning",
     EventStatus.CLOSED_UNFULFILLED.value: "badge badge-secondary",
-    EventStatus.CLOSED_DEMAND_FULFILLED.value: "badge badge-secondary",
+    EventStatus.CLOSED_DEMAND_FULFILLED.value: "badge badge-dark",
 }
 
 REG_STATUS_CLASS = {
@@ -34,25 +34,46 @@ REG_STATUS_CLASS = {
 }
 
 
+def decorated_user(user):
+    return {
+        "username": user.username,
+        "displayed_name": user.get_full_name() or user.username,
+        **user.__dict__,
+    }
+
+
 def decorated_event(event, user):
-    es = event.status()
+    event_status = event.status()
     rs = logics.reg_status(user, event)
-    is_event_open = es in [
+    is_event_open = event_status in [
         EventStatus.OPEN_REG_AND_WAIT,
         EventStatus.OPEN_FCFS,
     ]
+    can_register = user.is_authenticated and rs == RegStatus.NONE and is_event_open
+    can_unregister = user.is_authenticated and rs == RegStatus.PENDING
+    accepted_users = [
+        decorated_user(r.user)
+        for r in Reg.objects.filter(event=event, status=RegStatus.ACCEPTED).all()
+    ]
+    reg_count = Reg.objects.filter(event=event).count()
+    is_user_accepted = user.is_authenticated and (
+        Reg.objects.filter(user=user, event=event, status=RegStatus.ACCEPTED).count()
+        > 0
+    )
+
     return {
         "time_status_label": TimeStatus[event.time_status].label,
         "time_status_class": TIME_STATUS_CLASS[event.time_status],
-        "status_label": EventStatus[es].label,
-        "status_class": STATUS_CLASS[es],
+        "status_label": EventStatus[event_status].label,
+        "status_class": STATUS_CLASS[event_status],
         "reg_status_label": RegStatus[rs].label,
         "reg_status_class": REG_STATUS_CLASS[rs],
         "has_registered": rs != RegStatus.NONE,
-        "can_register": user.is_authenticated
-        and rs == RegStatus.NONE
-        and is_event_open,
-        "can_unregister": user.is_authenticated and rs == RegStatus.PENDING,
+        "can_register": can_register,
+        "can_unregister": can_unregister,
+        "accepted_users": accepted_users,
+        "reg_count": reg_count,
+        "is_user_accepted": is_user_accepted,
         **event.__dict__,
     }
 
@@ -87,10 +108,7 @@ class EventDetailView(View):
         return render(
             request,
             self.template_name,
-            {
-                "event": decorated_event(event, request.user),
-                "reg": decorated_reg(rs, event),
-            },
+            {"event": decorated_event(event, request.user)},
         )
 
     def post(self, request, id, *args, **kwargs):
