@@ -5,9 +5,9 @@ from django.views import View
 
 import calendar
 
-from . import logics, utils
-from .exceptions import LogicError
-from .models import Event, TimeStatus, EventStatus, RegStatus, Reg
+from .. import logics, utils
+from ..exceptions import LogicError
+from ..models import Event, TimeStatus, EventStatus, RegStatus, Reg
 
 TIME_STATUS_CLASS = {
     TimeStatus.ON_TIME.value: "badge badge-light",
@@ -66,8 +66,6 @@ def decorated_event(event, user):
         "time_status_class": TIME_STATUS_CLASS[event.time_status],
         "status_label": EventStatus[event_status].label,
         "status_class": STATUS_CLASS[event_status],
-        "reg_status_label": RegStatus[rs].label,
-        "reg_status_class": REG_STATUS_CLASS[rs],
         "has_registered": rs != RegStatus.NONE,
         "can_register": can_register,
         "can_unregister": can_unregister,
@@ -75,22 +73,51 @@ def decorated_event(event, user):
         "reg_count": reg_count,
         "is_user_accepted": is_user_accepted,
         **event.__dict__,
+        **DECORATION_REG_STATUS[rs],
     }
 
-
-def decorated_reg(rs, event):  # deprecated
-    is_event_open = event.status() in [
-        EventStatus.OPEN_REG_AND_WAIT,
-        EventStatus.OPEN_FCFS,
-    ]
-    return {
-        "reg_status_label": RegStatus[rs].label,
-        "reg_status_class": REG_STATUS_CLASS[rs],
-        "has_registered": rs != RegStatus.NONE,
-        "can_register": rs == RegStatus.NONE and is_event_open,
-        "can_unregister": rs == RegStatus.PENDING,
-    }
-
+DECORATION_REG_STATUS = {
+    RegStatus.NONE.value: {
+        "reg_status_label": "Unregistered",
+        "reg_status_class": "badge badge-light",
+    },
+    RegStatus.PENDING.value: {
+        "reg_status_label": "Registration pending",
+        "reg_status_class": "badge badge-info",
+        "card_header": {
+            "icon": "fa fa-circle",
+            "label": "Pending",
+            "class": "bg-info text-white",
+        },
+        "card_border": {
+            "class": "border-info",
+        }
+    },
+    RegStatus.ACCEPTED.value: {
+        "reg_status_label": "Registration accepted",
+        "reg_status_class": "badge badge-success",
+        "card_header": {
+            "icon": "fa fa-check",
+            "label": "Allocated",
+            "class": "bg-success text-white",
+        },
+        "card_border": {
+            "class": "border-success",
+        }
+    },
+    RegStatus.REJECTED.value: {
+        "reg_status_label": "Registration rejected",
+        "reg_status_class": "badge badge-danger",
+        "card_header": {
+            "icon": "fa fa-times",
+            "label": "Rejected",
+            "class": "bg-danger text-white",
+        },
+        "card_border": {
+            "class": "border-danger",
+        }
+    },
+}
 
 class EventHomeView(View):
     def get(request, *args, **kwargs):
@@ -146,5 +173,7 @@ class EventWeekView(View):
         ]
         data = {
             "days": days,
+            "active_week_no": week_no,
+            "week_no_list": [0, 1, 2, 3, 4, 5],
         }
         return render(request, self.template_name, data)
