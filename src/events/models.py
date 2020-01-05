@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.utils.timezone import localtime
 
 WEEK_OFFSET = -2
 
@@ -57,10 +58,10 @@ class Event(models.Model):
         return self.title
 
     def week_no(self):
-        return self.start_at.isocalendar()[1] + WEEK_OFFSET
+        return localtime(self.start_at).isocalendar()[1] + WEEK_OFFSET
 
     def day_of_week(self):
-        return self.start_at.weekday()
+        return localtime(self.start_at).weekday()
 
     def is_demand_fulfilled(self):
         num_reg_accepted = Reg.objects.filter(
