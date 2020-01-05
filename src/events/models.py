@@ -88,7 +88,6 @@ class Event(models.Model):
         if wc and wc.reg_start_at and now < wc.reg_start_at:
             return EventStatus.CLOSED_UNOPENED.value
 
-
         if not self.is_fcfs:
             if wc and wc.reg_ended_at and now > wc.reg_ended_at:
                 return EventStatus.CLOSED_REG_CLOSED.value
@@ -118,3 +117,8 @@ class WeekConfig(models.Model):
 
     def __str__(self):
         return "{} - {} - {}".format(self.week_no, self.reg_start_at, self.reg_ended_at)
+
+
+class Announcement(models.Model):
+    text = models.TextField()
+    hidden = models.BooleanField(default=False)

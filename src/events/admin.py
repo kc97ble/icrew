@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.utils.timezone import localtime
 
-from .models import Event, Reg, WeekConfig, WEEK_OFFSET
+from .models import Event, Reg, WeekConfig, WEEK_OFFSET, Announcement
 
 class WeekNoFilter(admin.SimpleListFilter):
     title = 'week number'
@@ -65,10 +65,16 @@ class RegAdmin(admin.ModelAdmin):
     list_editable = ["status"]
 
 
+@admin.register(WeekConfig)
 class WeekConfigAdmin(admin.ModelAdmin):
     list_display = ["week_no", "reg_start_at", "reg_ended_at"]
     list_editable = ["reg_start_at", "reg_ended_at"]
 
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
+    list_display = ["id", "text", "hidden"]
+    list_editable = ["text", "hidden"]
+
+
 admin.site.register(Event, EventAdmin)
 admin.site.register(Reg, RegAdmin)
-admin.site.register(WeekConfig, WeekConfigAdmin)
