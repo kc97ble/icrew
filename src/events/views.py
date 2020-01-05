@@ -139,7 +139,7 @@ class EventWeekView(View):
                 "events": [
                     decorated_event(e, request.user)
                     for e in sorted(events, key=lambda e: e.start_at)
-                    if e.day_of_week() == dow
+                    if e.day_of_week() == dow and not e.hidden
                 ],
             }
             for dow in range(7)

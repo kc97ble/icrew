@@ -5,7 +5,7 @@ from django.utils.timezone import localtime
 from .models import Event, Reg, WeekConfig, WEEK_OFFSET
 
 class WeekNoFilter(admin.SimpleListFilter):
-    title = 'Week number'
+    title = 'week number'
     parameter_name = 'week_no'
 
     def lookups(self, request, model_admin):
@@ -19,7 +19,6 @@ class WeekNoFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-
         if self.value() is None:
             return queryset
 
