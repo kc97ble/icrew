@@ -1,6 +1,30 @@
 from django.contrib import admin
+from django.conf import settings
+from django.utils.timezone import localtime
 
-from .models import Event, Reg, WeekConfig
+from .models import Event, Reg, WeekConfig, WEEK_OFFSET
+
+class WeekNoFilter(admin.SimpleListFilter):
+    title = 'Week number'
+    parameter_name = 'week_no'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('0', '0'),
+            ('1', '1'),
+            ('2', '2'),
+            ('3', '3'),
+            ('4', '4'),
+            ('5', '5'),
+        )
+
+    def queryset(self, request, queryset):
+
+        if self.value() is None:
+            return queryset
+
+        value = int(self.value())
+        return queryset.filter(start_at__week=value-WEEK_OFFSET)
 
 class EventAdmin(admin.ModelAdmin):
     list_display = [
@@ -18,18 +42,23 @@ class EventAdmin(admin.ModelAdmin):
         "is_fcfs",
     ]
     list_editable = ["locked", "hidden", "is_fcfs", "locking_reason"]
-    list_filter = ["demand", "locked", "hidden", "is_fcfs", "locking_reason"]
+    list_filter = [WeekNoFilter, "demand", "locked", "hidden", "is_fcfs", "locking_reason"]
+
+    def week_no(self, event):
+        return event.week_no()
+    week_no.short_description = "Wk"
 
     def date(self, event):
-        return event.start_at.date()
+        return localtime(event.start_at).date()
+    date.admin_order_field = "start_at"
 
     def start_time(self, event):
-        return event.start_at.time()
+        return localtime(event.start_at).time()
+    start_time.short_description = "Start"
 
     def ended_time(self, event):
-        return event.ended_at.time()
-
-    date.admin_order_field = "start_at"
+        return localtime(event.ended_at).time()
+    ended_time.short_description = "End"
 
 
 class RegAdmin(admin.ModelAdmin):
