@@ -29,6 +29,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = [
         "title",
         "week_no",
+        "day_of_week",
         "date",
         "start_time",
         "ended_time",
@@ -46,6 +47,10 @@ class EventAdmin(admin.ModelAdmin):
     def week_no(self, event):
         return event.week_no()
     week_no.short_description = "Wk"
+
+    def day_of_week(self, event):
+        return event.day_of_week()
+    day_of_week.short_description = "Wd"
 
     def date(self, event):
         return localtime(event.start_at).date()
