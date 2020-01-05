@@ -61,6 +61,11 @@
                   {{ event.reg_status_label|default:'Unknown status' }}
                 </span>
                 {% endif %}
+                {% if event.locked %}
+                <span class="badge badge-danger">
+                  Locked by admin
+                </span>
+                {% endif %}
               </p>
             </div>
           </div>
