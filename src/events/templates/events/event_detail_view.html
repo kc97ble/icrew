@@ -25,6 +25,14 @@
         <td>{{ event.demand }} videographer{{ event.demand|pluralize }}</td>
       </tr>
       <tr>
+        <td>Event status</td>
+        <td>
+          <span class="{{ event.status_class|default:'badge badge-secondary' }}">
+            {{ event.status_label|default:'Unknown status' }}
+          </span>
+        </td>
+      </tr>
+      <tr>
         <td>Time status</td>
         <td>
           <span class="{{ event.time_status_class|default:'badge badge-secondary' }}">
@@ -33,19 +41,7 @@
         </td>
       </tr>
       <tr>
-        <td>
-          Event status
-        </td>
-        <td>
-          <span class="{{ event.status_class|default:'badge badge-secondary' }}">
-            {{ event.status_label|default:'Unknown status' }}
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Registration status
-        </td>
+        <td>Registration status</td>
         <td>
           <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}">
             {{ event.reg_status_label|default:'Unknown status' }}
