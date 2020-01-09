@@ -5,8 +5,17 @@ from django.utils.timezone import localtime
 
 from .constants import *
 
+
 def CharFieldWithChoice(Choices, default=None):
     return models.CharField(max_length=255, choices=Choices.choices, default=default)
+
+
+class Tag(models.Model):
+    label = models.CharField(max_length=255)
+    level = CharFieldWithChoice(MessageLevel, default=MessageLevel.INFO)
+
+    def __str__(self):
+        return "[{}] {}".format(self.level, self.label)
 
 
 class Event(models.Model):
@@ -21,6 +30,7 @@ class Event(models.Model):
     start_at = models.DateTimeField()
     ended_at = models.DateTimeField()
     demand = models.IntegerField(default=1, help_text="number of members needed")
+    custom_tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.title

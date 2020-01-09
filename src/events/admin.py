@@ -2,7 +2,10 @@ from django.contrib import admin
 from django.conf import settings
 from django.utils.timezone import localtime
 
-from .models import Event, Reg, WeekConfig, WEEK_OFFSET, Announcement
+from .models import Event, Reg, WeekConfig, WEEK_OFFSET, Announcement, Tag
+
+class EventTagInline(admin.TabularInline):
+    model = Event.custom_tags.through
 
 class WeekNoFilter(admin.SimpleListFilter):
     title = 'week number'
@@ -43,6 +46,8 @@ class EventAdmin(admin.ModelAdmin):
     ]
     list_editable = ["locked", "hidden", "is_fcfs", "locking_reason"]
     list_filter = [WeekNoFilter, "demand", "locked", "hidden", "is_fcfs", "locking_reason"]
+    inlines = [EventTagInline]
+    exclude = ["custom_tags"]
 
     def week_no(self, event):
         return event.week_no()
@@ -83,3 +88,4 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Reg, RegAdmin)
+admin.site.register(Tag)

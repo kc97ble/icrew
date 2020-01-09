@@ -1,4 +1,4 @@
-from events.models.constants import TimeStatus, EventStatus, RegStatus
+from events.models.constants import TimeStatus, EventStatus, RegStatus, MessageLevel
 
 TIME_STATUS_CLASS = {
     TimeStatus.ON_TIME.value: "badge badge-light",
@@ -38,9 +38,7 @@ DECORATION_REG_STATUS = {
             "label": "Pending",
             "class": "bg-info text-white",
         },
-        "card_border": {
-            "class": "border-info",
-        }
+        "card_border": {"class": "border-info"},
     },
     RegStatus.ACCEPTED.value: {
         "reg_status_label": "Registration accepted",
@@ -50,9 +48,7 @@ DECORATION_REG_STATUS = {
             "label": "Allocated",
             "class": "bg-success text-white",
         },
-        "card_border": {
-            "class": "border-success",
-        }
+        "card_border": {"class": "border-success"},
     },
     RegStatus.REJECTED.value: {
         "reg_status_label": "Registration rejected",
@@ -62,8 +58,13 @@ DECORATION_REG_STATUS = {
             "label": "Rejected",
             "class": "bg-danger text-white",
         },
-        "card_border": {
-            "class": "border-danger",
-        }
+        "card_border": {"class": "border-danger"},
     },
+}
+
+DECORATION_TAG_LEVEL = {
+    MessageLevel.INFO.value: {"class": "badge badge-light"},
+    MessageLevel.WARNING.value: {"class": "badge badge-warning"},
+    MessageLevel.ERROR.value: {"class": "badge badge-danger"},
+    MessageLevel.FATAL.value: {"class": "badge badge-danger"},
 }

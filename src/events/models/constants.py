@@ -31,3 +31,9 @@ class EventStatus(models.TextChoices):
     OPEN_FCFS = "OPEN_FCFS", "Open - First come first serve"
     CLOSED_UNFULFILLED = "CLOSED_UNFULFILLED", "Closed - Unfulfilled"
     CLOSED_DEMAND_FULFILLED = "CLOSED_DEMAND_FULFILLED", "Closed - Demand fulfilled"
+
+class MessageLevel(models.TextChoices):
+    INFO = "INFO"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    FATAL = "FATAL"

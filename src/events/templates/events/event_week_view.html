@@ -4,10 +4,7 @@
   <ul class="nav nav-tabs mb-4">
     {% for week_no in week_no_list %}
     <li class="nav-item">
-      <a
-        class="nav-link {% if week_no == active_week_no %} active {% endif %}"
-        href="{% url 'events-week' week_no %}"
-      >
+      <a class="nav-link {% if week_no == active_week_no %} active {% endif %}" href="{% url 'events-week' week_no %}">
         Week {{ week_no }}
       </a>
     </li>
@@ -66,6 +63,11 @@
                   Locked by admin
                 </span>
                 {% endif %}
+                {% for tag in event.custom_tags %}
+                <span class="{{ tag.class|default:'badge badge-secondary' }}">
+                  {{ tag.label }}
+                </span>
+                {% endfor %}
               </p>
             </div>
           </div>

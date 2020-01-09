@@ -48,6 +48,30 @@
           </span>
         </td>
       </tr>
+      <tr>
+        <td>Other tags</td>
+        <td>
+          {% for tag in event.custom_tags %}
+          <span class="{{ tag.class|default:'badge badge-secondary' }}">
+            {{ tag.label }}
+          </span>
+          {% empty %}
+          (none)
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td>Allocated users</td>
+        <td>
+          <!-- <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}"> -->
+            <!-- {{ event.reg_status_label|default:'Unknown status' }} -->
+          <!-- </span> -->
+          {% for user in event.accepted_users %}
+          {{ user.displayed_name  }}
+          {% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
     </tbody>
   </table>
 
