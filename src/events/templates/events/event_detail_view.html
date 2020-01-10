@@ -92,6 +92,12 @@
     You have to login before registration.
   </div>
   {% endif %}
+
+  {% if user.is_staff %}
+  <a href="{% url 'admin:events_event_change' event.id %}" class="btn btn-block btn-lg btn-secondary my-4">
+    Edit
+  </a>
+  {% endif %}
 </div>
 
 {% endblock content %}
