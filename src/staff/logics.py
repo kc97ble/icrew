@@ -13,3 +13,9 @@ def inconsistent_events(week_no, data):
         for e in events
         if normalize(e.description) not in n_data
     ]
+
+
+def all_inconsistent_events(data):
+    events = Event.objects.all()
+    n_data = normalize(data)
+    return [e for e in events if normalize(e.description) not in n_data]
