@@ -2,6 +2,7 @@ from django.db import models
 
 WEEK_OFFSET = -2
 
+
 class TimeStatus(models.TextChoices):
     ON_TIME = "ON_TIME"
     DELAYED = "DELAYED"
@@ -31,6 +32,7 @@ class EventStatus(models.TextChoices):
     OPEN_FCFS = "OPEN_FCFS", "Open - First come first serve"
     CLOSED_UNFULFILLED = "CLOSED_UNFULFILLED", "Closed - Unfulfilled"
     CLOSED_DEMAND_FULFILLED = "CLOSED_DEMAND_FULFILLED", "Closed - Demand fulfilled"
+
 
 class MessageLevel(models.TextChoices):
     INFO = "INFO"

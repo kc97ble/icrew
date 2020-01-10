@@ -18,7 +18,7 @@
       </tr>
       <tr>
         <td>Description</td>
-        <td>{{ event.description|default:"(none)" }}</td>
+        <td style="white-space: pre-line;">{{ event.description|default:"(none)" }}</td>
       </tr>
       <tr>
         <td>Demand</td>
@@ -64,7 +64,7 @@
         <td>Allocated users</td>
         <td>
           <!-- <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}"> -->
-            <!-- {{ event.reg_status_label|default:'Unknown status' }} -->
+          <!-- {{ event.reg_status_label|default:'Unknown status' }} -->
           <!-- </span> -->
           {% for user in event.accepted_users %}
           {{ user.displayed_name  }}
