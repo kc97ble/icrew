@@ -1,0 +1,12 @@
+{% extends "staff/base.html" %} {% block content %}
+
+{% for e in inconsistent_events %}
+<div class="card">
+  <p>ID: {{ e.id }}</p>
+  <p>Title: {{ e.title }}</p>
+  <p>Description: {{ e.description }}</p>
+  <p>Source: {{ e.source }}</p>
+  <p>Target: {{ e.target }}</p>
+</div>
+{% endfor %}
+{% endblock content %}
