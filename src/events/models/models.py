@@ -3,7 +3,14 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.timezone import localtime
 
-from .constants import *
+from .constants import (
+    LockingReason,
+    TimeStatus,
+    MessageLevel,
+    WEEK_OFFSET,
+    RegStatus,
+    EventStatus,
+)
 
 
 def CharFieldWithChoice(Choices, default=None):
@@ -31,9 +38,10 @@ class Event(models.Model):
     ended_at = models.DateTimeField()
     demand = models.IntegerField(default=1, help_text="number of members needed")
     custom_tags = models.ManyToManyField(Tag)
+    is_inconsistent = models.BooleanField(null=False, default=False)
 
     def __str__(self):
-        return self.title
+        return "E{} - {}".format(self.id, self.title)
 
     def week_no(self):
         return localtime(self.start_at).isocalendar()[1] + WEEK_OFFSET

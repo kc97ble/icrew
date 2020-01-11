@@ -3,8 +3,6 @@ from django.shortcuts import render
 
 from .logics import inconsistent_events
 
-# Create your views here.
-
 
 class ConsistencyTestView(View):
     template_name = "staff/consistency_test.html"

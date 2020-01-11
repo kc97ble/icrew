@@ -1,24 +1,25 @@
 from django.contrib import admin
-from django.conf import settings
 from django.utils.timezone import localtime
 
 from .models import Event, Reg, WeekConfig, WEEK_OFFSET, Announcement, Tag
 
+
 class EventTagInline(admin.TabularInline):
     model = Event.custom_tags.through
 
+
 class WeekNoFilter(admin.SimpleListFilter):
-    title = 'week number'
-    parameter_name = 'week_no'
+    title = "week number"
+    parameter_name = "week_no"
 
     def lookups(self, request, model_admin):
         return (
-            ('0', '0'),
-            ('1', '1'),
-            ('2', '2'),
-            ('3', '3'),
-            ('4', '4'),
-            ('5', '5'),
+            ("0", "0"),
+            ("1", "1"),
+            ("2", "2"),
+            ("3", "3"),
+            ("4", "4"),
+            ("5", "5"),
         )
 
     def queryset(self, request, queryset):
@@ -26,10 +27,12 @@ class WeekNoFilter(admin.SimpleListFilter):
             return queryset
 
         value = int(self.value())
-        return queryset.filter(start_at__week=value-WEEK_OFFSET)
+        return queryset.filter(start_at__week=value - WEEK_OFFSET)
+
 
 class EventAdmin(admin.ModelAdmin):
     list_display = [
+        "id",
         "title",
         "week_no",
         "day_of_week",
@@ -45,28 +48,40 @@ class EventAdmin(admin.ModelAdmin):
         "is_fcfs",
     ]
     list_editable = ["locked", "hidden", "is_fcfs", "locking_reason"]
-    list_filter = [WeekNoFilter, "demand", "locked", "hidden", "is_fcfs", "locking_reason"]
+    list_filter = [
+        WeekNoFilter,
+        "demand",
+        "locked",
+        "hidden",
+        "is_fcfs",
+        "locking_reason",
+    ]
     inlines = [EventTagInline]
     exclude = ["custom_tags"]
 
     def week_no(self, event):
         return event.week_no()
+
     week_no.short_description = "Wk"
 
     def day_of_week(self, event):
         return event.day_of_week()
+
     day_of_week.short_description = "Wd"
 
     def date(self, event):
         return localtime(event.start_at).date()
+
     date.admin_order_field = "start_at"
 
     def start_time(self, event):
         return localtime(event.start_at).time()
+
     start_time.short_description = "Start"
 
     def ended_time(self, event):
         return localtime(event.ended_at).time()
+
     ended_time.short_description = "End"
 
 
@@ -79,6 +94,7 @@ class RegAdmin(admin.ModelAdmin):
 class WeekConfigAdmin(admin.ModelAdmin):
     list_display = ["week_no", "reg_start_at", "reg_ended_at"]
     list_editable = ["reg_start_at", "reg_ended_at"]
+
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):

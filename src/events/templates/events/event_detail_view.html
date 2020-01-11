@@ -2,6 +2,12 @@
 
 <div class="container-sm">
   <h1>{{ event.title }}</h1>
+  {% if event.is_inconsistent %}
+  <div class="alert alert-danger my-4" role="alert">
+    The details are inconsistent with the official schedule.
+    Please use the infomation from the official schedule instead.
+  </div>
+  {% endif %}
   <table class="table">
     <tbody>
       <tr>
@@ -63,9 +69,6 @@
       <tr>
         <td>Allocated users</td>
         <td>
-          <!-- <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}"> -->
-          <!-- {{ event.reg_status_label|default:'Unknown status' }} -->
-          <!-- </span> -->
           {% for user in event.accepted_users %}
           {{ user.displayed_name  }}
           {% if not forloop.last %}, {% endif %}

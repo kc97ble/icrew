@@ -30,7 +30,12 @@
 
             <div class="card-body">
               <h6 class="card-title">
-                <a href="{% url 'events-detail' id=event.id %}" class="stretched-link">{{ event.title }}</a>
+                {% if event.is_inconsistent %}
+                <i class="fa fa-exclamation-triangle text-danger"></i>
+                {% endif %}
+                <a href="{% url 'events-detail' id=event.id %}" class="stretched-link">
+                  {{ event.title }}
+                </a>
               </h6>
               <p class="text-secondary m-0">
                 {{ event.start_at|date:"H:i" }} - {{ event.ended_at|date:"H:i" }}
@@ -41,7 +46,7 @@
               <p class="text-success m-0">
                 Allocated users ({{ event.accepted_users|length }}):
                 {% for user in event.accepted_users %}
-                {{ user.displayed_name  }}
+                {{ user.displayed_name }}
                 {% if not forloop.last %}, {% endif %}
                 {% endfor %}
               </p>
@@ -57,13 +62,11 @@
                 <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}">
                   {{ event.reg_status_label|default:'Unknown status' }}
                 </span>
-                {% endif %}
-                {% if event.locked %}
+                {% endif %} {% if event.locked %}
                 <span class="badge badge-danger">
                   Locked by admin
                 </span>
-                {% endif %}
-                {% for tag in event.custom_tags %}
+                {% endif %} {% for tag in event.custom_tags %}
                 <span class="{{ tag.class|default:'badge badge-secondary' }}">
                   {{ tag.label }}
                 </span>
