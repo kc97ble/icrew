@@ -33,15 +33,21 @@
                 {% if event.is_inconsistent %}
                 <i class="fa fa-exclamation-triangle text-danger"></i>
                 {% endif %}
+                {% if event.demand %}
                 <a href="{% url 'events-detail' id=event.id %}" class="stretched-link">
                   {{ event.title }}
                 </a>
+                {% else %}
+                  <span>{{ event.title }}</span>
+                {% endif %}
               </h6>
               <p class="text-secondary m-0">
                 {{ event.start_at|date:"H:i" }} - {{ event.ended_at|date:"H:i" }}
               </p>
               <p class="text-secondary m-0">@ {{ event.venue }}</p>
+              {% if event.demand %}
               <p class="text-secondary m-0">{{ event.reg_count }} / {{ event.demand }} registered</p>
+              {% endif %}
               {% if event.accepted_users %}
               <p class="text-success m-0">
                 Allocated users ({{ event.accepted_users|length }}):
@@ -52,12 +58,14 @@
               </p>
               {% endif %}
               <p>
-                <span class="{{ event.time_status_class|default:'badge badge-secondary' }}">
+                <!-- <span class="{{ event.time_status_class|default:'badge badge-secondary' }}">
                   {{ event.time_status_label|default:'Unknown time status' }}
-                </span>
+                </span> -->
+                {% if event.demand %}
                 <span class="{{ event.status_class|default:'badge badge-secondary' }}">
                   {{ event.status_label|default:'Unknown status' }}
                 </span>
+                {% endif %}
                 {% if event.has_registered %}
                 <span class="{{ event.reg_status_class|default:'badge badge-secondary' }}">
                   {{ event.reg_status_label|default:'Unknown status' }}
