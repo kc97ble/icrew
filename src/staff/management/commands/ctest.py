@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         response = requests.get(TSV_LINK)
-        data = str(response.content)
+        data = response.content.decode("utf-8")
         if response.status_code == 200:
             ie_ids = all_inconsistent_event_ids(data)
             if ie_ids:
