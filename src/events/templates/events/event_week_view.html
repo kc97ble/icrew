@@ -36,6 +36,9 @@
                 {% if event.demand %}
                 <a href="{% url 'events-detail' id=event.id %}" class="stretched-link">
                   {{ event.title }}
+                  {% if event.is_recently_changed %}
+                  <i class="fa fa-history blink text-warning"></i>
+                  {% endif %}
                 </a>
                 {% else %}
                   <span>{{ event.title }}</span>

@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from events import logics
 from events.models import TimeStatus, EventStatus, RegStatus, Reg
 from .constants import (
@@ -7,6 +9,7 @@ from .constants import (
     DECORATION_TAG_LEVEL,
 )
 
+RECENTLY_CHANGED_INTERVAL = timedelta(days=1)
 
 def decorated_user(user):
     return {
@@ -39,6 +42,7 @@ def decorated_event(event, user):
         > 0
     )
     custom_tags = [decorated_tag(tag) for tag in event.custom_tags.all()]
+    is_recently_changed = (timezone.now() - event.modified_at) < RECENTLY_CHANGED_INTERVAL
 
     return {
         "time_status_label": TimeStatus[event.time_status].label,
@@ -52,6 +56,7 @@ def decorated_event(event, user):
         "reg_count": reg_count,
         "is_user_accepted": is_user_accepted,
         "custom_tags": custom_tags,
+        "is_recently_changed": is_recently_changed,
         **event.__dict__,
         **DECORATION_REG_STATUS.get(rs, {}),
     }

@@ -39,6 +39,8 @@ class Event(models.Model):
     demand = models.IntegerField(default=1, help_text="number of members needed")
     custom_tags = models.ManyToManyField(Tag)
     is_inconsistent = models.BooleanField(null=False, default=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    modified_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return "E{} - {}".format(self.id, self.title)

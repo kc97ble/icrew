@@ -1,11 +1,20 @@
 {% extends "events/base_events.html" %} {% block content %}
 
 <div class="container-sm">
-  <h1>{{ event.title }}</h1>
+  <h1>
+    {{ event.title }}
+  </h1>
   {% if event.is_inconsistent %}
   <div class="alert alert-danger my-4" role="alert">
+    <i class="fa fa-exclamation-triangle"></i>
     The details are inconsistent with the official schedule.
     Please use the infomation from the official schedule instead.
+  </div>
+  {% endif %}
+  {% if event.is_recently_changed %}
+  <div class="alert alert-warning my-4" role="alert">
+    <i class="fa fa-history"></i>
+    There have been some new changes within 24 hours!
   </div>
   {% endif %}
   <table class="table">
@@ -74,6 +83,14 @@
           {% if not forloop.last %}, {% endif %}
           {% endfor %}
         </td>
+      </tr>
+      <tr>
+        <td>Created at</td>
+        <td>{{ event.created_at|date:'d M Y H:i'|default:'Unknown' }}</td>
+      </tr>
+      <tr>
+        <td>Modified at</td>
+        <td>{{ event.modified_at|date:'d M Y H:i'|default:'Unknown' }}</td>
       </tr>
     </tbody>
   </table>
