@@ -33,8 +33,9 @@ class Command(BaseCommand):
             if kwargs["save"]:
                 events = Event.objects.all()
                 for e in events:
-                    e.is_inconsistent = e.id in ie_ids
-                    e.save()
+                    if e.is_inconsistent != e.id in ie_ids:
+                        e.is_inconsistent = e.id in ie_ids
+                        e.save()
             elif ie_ids:
                 self.stdout.write("Use --save to update database")
 
