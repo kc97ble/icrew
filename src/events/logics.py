@@ -1,8 +1,5 @@
-from django.utils import timezone
-from django.contrib.auth.models import User
-
 from .exceptions import LogicError
-from .models import Event, Reg, EventStatus, RegStatus
+from .models import Reg, EventStatus, RegStatus
 
 
 def reg_status(user, event):

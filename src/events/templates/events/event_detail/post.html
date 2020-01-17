@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block basecontent %}
+
+<div class="container-sm">
+  <div class="card my-4">
+    <div class="card-header {{ response.card_header.class }}">
+      <i class="{{ response.card_header.icon }} mr-1"></i>
+      {{ response.message }}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title my-4">{{ event.title }}</h5>
+      <p class="card-text">
+        Time: {{ event.start_at|date:"H:i" }} - {{ event.ended_at|date:"H:i" }}
+      </p>
+      <p class="card-text">
+        Date: {{ event.start_at|date:"d M Y" }}
+      </p>
+      <p class="card-text">
+        Venue: {{ event.venue|default:"(none)" }}
+      </p>
+    </div>
+  </div>
+  <div>
+    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-block {{ response.button.class }}">Back</a>
+  </div>
+</div>
+
+{% endblock basecontent %}

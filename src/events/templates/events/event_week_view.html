@@ -1,6 +1,9 @@
 {% extends "events/base_events.html" %} {% block content %}
 
 <div class="container-fluid">
+  <div class="text-secondary text-center font-italic mb-2">
+    Announcements have been moved to the <a class="text-dark" href="{% url 'home' %}">home page</a>
+  </div>
   <ul class="nav nav-tabs mb-4">
     {% for week_no in week_no_list %}
     <li class="nav-item">
@@ -33,15 +36,15 @@
                 {% if event.is_inconsistent %}
                 <i class="fa fa-exclamation-triangle text-danger"></i>
                 {% endif %}
+                {% if event.is_recently_changed %}
+                <i class="fa fa-history blink text-warning"></i>
+                {% endif %}
                 {% if event.demand %}
                 <a href="{% url 'events-detail' id=event.id %}" class="stretched-link">
                   {{ event.title }}
-                  {% if event.is_recently_changed %}
-                  <i class="fa fa-history blink text-warning"></i>
-                  {% endif %}
                 </a>
                 {% else %}
-                  <span>{{ event.title }}</span>
+                <span>{{ event.title }}</span>
                 {% endif %}
               </h6>
               <p class="text-secondary m-0">

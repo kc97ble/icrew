@@ -11,6 +11,7 @@ from .constants import (
 
 RECENTLY_CHANGED_INTERVAL = timedelta(days=1)
 
+
 def decorated_user(user):
     return {
         "username": user.username,
@@ -42,7 +43,9 @@ def decorated_event(event, user):
         > 0
     )
     custom_tags = [decorated_tag(tag) for tag in event.custom_tags.all()]
-    is_recently_changed = (timezone.now() - event.modified_at) < RECENTLY_CHANGED_INTERVAL
+    is_recently_changed = (
+        timezone.now() - event.modified_at
+    ) < RECENTLY_CHANGED_INTERVAL
 
     return {
         "time_status_label": TimeStatus[event.time_status].label,

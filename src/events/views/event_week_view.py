@@ -1,13 +1,9 @@
-from django.http import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render, get_object_or_404
 from django.views import View
-
+from django.shortcuts import render
 import calendar
-
-from events import logics, utils
-from events.exceptions import LogicError
 from events.models import Event
 from .utils import decorated_event
+from events.utils import datetime_from_week_no
 
 
 class EventWeekView(View):
@@ -18,7 +14,7 @@ class EventWeekView(View):
         days = [
             {
                 "day_name": calendar.day_name[dow],
-                "date": utils.datetime_from_week_no(week_no, dow),
+                "date": datetime_from_week_no(week_no, dow),
                 "events": [
                     decorated_event(e, request.user)
                     for e in sorted(events, key=lambda e: e.start_at)
