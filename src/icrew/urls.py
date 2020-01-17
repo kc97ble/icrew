@@ -25,4 +25,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('staff/', include('staff.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('ranking/', include('ranking.urls')),
 ]
