@@ -57,6 +57,7 @@ class EventAdmin(admin.ModelAdmin):
     ]
     inlines = [EventTagInline]
     exclude = ["custom_tags"]
+    save_as = True
 
     week_no = lambda self, event: event.week_no()  # noqa
     week_no.short_description = "Wk"
