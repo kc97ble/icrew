@@ -41,6 +41,7 @@ class Event(models.Model):
     is_inconsistent = models.BooleanField(null=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     modified_at = models.DateTimeField(auto_now=True, null=True)
+    remark = models.TextField(blank=True)
 
     def __str__(self):
         return "E{} - {}".format(self.id, self.title)

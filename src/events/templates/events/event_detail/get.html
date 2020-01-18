@@ -17,6 +17,12 @@
     There have been some new changes within 24 hours!
   </div>
   {% endif %}
+  {% if event.remark %}
+  <div class="alert alert-info my-4" role="alert">
+    <i class="fa fa-info-circle"></i>
+    {{ event.remark }}
+  </div>
+  {% endif %}
   <table class="table">
     <tbody>
       <tr>
