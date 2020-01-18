@@ -4,7 +4,6 @@
   {% for announcement in announcements %}
   <div class="alert alert-info my-3">{{ announcement.text }} </div>
   {% endfor %}
-
   <h4>Welcome to ICREW!</h4>
   <div class="my-4">
     {% if user.is_authenticated %} Hi {{ user.username }}! {% else %}

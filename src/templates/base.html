@@ -1,3 +1,4 @@
+{% load static %}
 <!-- templates/base.html -->
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   <title>{% block title %}ICREW - IHG Coverage Registration of EusoffWorks{% endblock %}</title>
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <style>
     button:disabled {
       cursor: not-allowed;
@@ -27,8 +29,9 @@
 
 <body>
   <nav class="navbar navbar-expand-sm navbar-light bg-light mb-4">
-    <a class="navbar-brand" href="#">ICREW</a>
-
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <img class="pb-1" src="{% static 'big-logo-light.png' %}" width="auto" height="32" style="mix-blend-mode: multiply;"></img>
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
