@@ -13,7 +13,12 @@
     </li>
     {% endfor %}
   </ul>
-
+  {% if week_config.remark %}
+  <div class="alert alert-info my-4" role="alert">
+    <i class="fa fa-info-circle"></i>
+    {{ week_config.remark }}
+  </div>
+  {% endif %}
   <div style="display: block; overflow-x: auto;">
     <small>
       <div class="row mx-0" style="min-width: 1500px">

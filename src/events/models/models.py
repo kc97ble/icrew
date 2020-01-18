@@ -104,6 +104,7 @@ class WeekConfig(models.Model):
     week_no = models.IntegerField(primary_key=True)
     reg_start_at = models.DateTimeField(null=True, blank=True)
     reg_ended_at = models.DateTimeField(null=True, blank=True)
+    remark = models.TextField(blank=True)
 
     def __str__(self):
         return "{} - {} - {}".format(self.week_no, self.reg_start_at, self.reg_ended_at)

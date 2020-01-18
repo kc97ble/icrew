@@ -6,8 +6,8 @@ from .reg_admin import RegAdmin
 
 @admin.register(WeekConfig)
 class WeekConfigAdmin(admin.ModelAdmin):
-    list_display = ["week_no", "reg_start_at", "reg_ended_at"]
-    list_editable = ["reg_start_at", "reg_ended_at"]
+    list_display = ["week_no", "reg_start_at", "reg_ended_at", "remark"]
+    list_editable = ["reg_start_at", "reg_ended_at", "remark"]
 
 
 @admin.register(Announcement)

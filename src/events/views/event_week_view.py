@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render
 import calendar
-from events.models import Event
+from events.models import Event, WeekConfig
 from .utils import decorated_event
 from events.utils import datetime_from_week_no
 
@@ -27,5 +27,6 @@ class EventWeekView(View):
             "days": days,
             "active_week_no": week_no,
             "week_no_list": [0, 1, 2, 3, 4, 5],
+            "week_config": WeekConfig.objects.filter(week_no=week_no).first(),
         }
         return render(request, self.template_name, data)
