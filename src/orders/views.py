@@ -1,11 +1,12 @@
 from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Order, Drink
 
 
-class OrderAddView(View):
+class OrderAddView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(
             request, "orders/order_add/get.html", {"drinks": Drink.objects.all()}
@@ -26,14 +27,14 @@ class OrderAddView(View):
         )
 
 
-class OrderListView(View):
+class OrderListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(
             request, "orders/order_list.html", {"orders": Order.objects.all()}
         )
 
 
-class OrderHomeView(View):
+class OrderHomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         order = Order.objects.filter(user=request.user).first()
         return render(request, "orders/order_home.html", {"order": order})
