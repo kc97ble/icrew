@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block basecontent %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">User</th>
+      <th scope="col">Drink</th>
+      <th scope="col">Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ order.user.username }}</td>
+      <td>{{ order.drink.title }}</td>
+      <td>{{ order.note }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock basecontent %}

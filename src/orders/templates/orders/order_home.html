@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block basecontent %}
+<div class="container">
+  <div class="alert alert-info my-3">
+    To appreciate all your hard work, I will buy drinks for you today (Wed, 12 Feb 2020)!
+    There are three choices: Iced Milo, Iced Lemon Tea, and Iced Coffee.
+    Please indicate your choice by 22:00 tonight. Thank you!
+  </div>
+  {% if not order %}
+  <p>You have not ordered any drinks</p>
+  <p><a href="{% url 'orders-add' %}" class="btn btn-primary">Add your order</a></p>
+  {% else %}
+  <p>You have ordered {{ order.drink.title }}</p>
+  <p>If you want to cancel, press the button below</p>
+  <p>If you want to edit, cancel first and then request a new one</p>
+  <form method="post">
+    {% csrf_token %}
+    <p><button type="submit" class="btn btn-danger" name="action" value="remove-order">Remove your order</button></p>
+  </form>
+  {% endif %}
+  <p>See all orders <a href="{% url 'orders-list' %}">here</a></p>
+</div>
+{% endblock %}

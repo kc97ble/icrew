@@ -4,8 +4,9 @@ from django.views import View
 
 from events import utils
 
+
 class EventHomeView(View):
-    def get(request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         return redirect(
             reverse("events-week", kwargs={"week_no": utils.current_week_no()})
         )
